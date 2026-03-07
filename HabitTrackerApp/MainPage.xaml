@@ -1,0 +1,159 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HabitTrackerApp.MainPage">
+
+    <Grid>
+
+        <!-- BACKGROUND IMAGE -->
+        <Image
+            Source="background.jpg"
+            Aspect="AspectFill"/>
+
+        <!-- DARK OVERLAY -->
+        <BoxView
+            BackgroundColor="#000000"
+            Opacity="0.35"/>
+
+        <!-- MAIN UI -->
+        <Grid RowDefinitions="Auto,Auto,Auto,*">
+
+            <!-- HEADER -->
+            <VerticalStackLayout Grid.Row="0"
+                                 Padding="25,40,25,10"
+                                 Spacing="6">
+
+                <Label Text="Habit Tracker"
+                       FontSize="34"
+                       FontAttributes="Bold"
+                       TextColor="White"/>
+
+                <Label Text="Build consistency every day"
+                       FontSize="14"
+                       TextColor="#E5E7EB"/>
+
+            </VerticalStackLayout>
+
+            <!-- STREAK -->
+            <Label x:Name="StreakLabel"
+                   Grid.Row="1"
+                   Margin="25,5"
+                   FontSize="16"
+                   TextColor="#F59E0B"
+                   Text="🔥 0 day streak"/>
+
+            <!-- PROGRESS CARD -->
+            <Frame Grid.Row="2"
+                   Margin="20,10"
+                   CornerRadius="16"
+                   Padding="20"
+                   HasShadow="True"
+                   BackgroundColor="White"
+                   Opacity="0.95">
+
+                <VerticalStackLayout Spacing="10">
+
+                    <Label Text="Today's progress"
+                           FontSize="14"
+                           TextColor="#6B7280"/>
+
+                    <Label x:Name="ProgressLabel"
+                           Text="0 / 0 habits completed"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="#111827"/>
+
+                    <ProgressBar x:Name="ProgressBar"
+                                 Progress="0"
+                                 HeightRequest="10"
+                                 BackgroundColor="#E5E7EB"
+                                 ProgressColor="#22C55E"/>
+
+                    <Label x:Name="StatsLabel"
+                           FontSize="13"
+                           TextColor="#6B7280"
+                           Text="Completion rate: 0%"/>
+
+                </VerticalStackLayout>
+
+            </Frame>
+
+            <!-- HABIT LIST -->
+            <CollectionView Grid.Row="3"
+                            x:Name="HabitList"
+                            Margin="15,10,15,90"
+                            ItemsLayout="VerticalList">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+
+                        <SwipeView>
+
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Delete"
+                                               BackgroundColor="#EF4444"
+                                               Invoked="OnDeleteHabit"/>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <Frame CornerRadius="16"
+                                   Padding="16"
+                                   Margin="0,6"
+                                   BackgroundColor="White"
+                                   Opacity="0.95"
+                                   HasShadow="True">
+
+                                <Grid ColumnDefinitions="Auto,*,Auto"
+                                      ColumnSpacing="12">
+
+                                    <CheckBox Grid.Column="0"
+                                              IsChecked="{Binding IsCompleted}"
+                                              CheckedChanged="OnHabitCheckedChanged"
+                                              Color="#22C55E"/>
+
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Name}"
+                                           FontSize="18"
+                                           FontAttributes="Bold"
+                                           TextColor="#111827"
+                                           VerticalOptions="Center"/>
+
+                                    <Button Grid.Column="2"
+                                            Text="Edit"
+                                            Clicked="OnEditHabit"
+                                            FontSize="12"
+                                            BackgroundColor="#F59E0B"
+                                            TextColor="White"
+                                            CornerRadius="8"
+                                            Padding="10,6"/>
+
+                                </Grid>
+
+                            </Frame>
+
+                        </SwipeView>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+            <!-- FLOATING BUTTON -->
+            <Button Text="+"
+                    Clicked="OnAddHabitClicked"
+                    FontSize="28"
+                    FontAttributes="Bold"
+                    WidthRequest="65"
+                    HeightRequest="65"
+                    CornerRadius="32"
+                    BackgroundColor="#16A34A"
+                    TextColor="White"
+                    HorizontalOptions="End"
+                    VerticalOptions="End"
+                    Margin="0,0,25,25"/>
+
+        </Grid>
+
+    </Grid>
+
+</ContentPage>
