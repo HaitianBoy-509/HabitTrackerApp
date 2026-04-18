@@ -4,155 +4,203 @@
 
     <Grid>
 
-        <!-- BACKGROUND IMAGE -->
-        <Image
-            Source="background.jpg"
-            Aspect="AspectFill"/>
+        <!-- BACKGROUND -->
+        <Image Source="background.jpg" Aspect="AspectFill"/>
 
-        <!-- DARK OVERLAY -->
-        <BoxView
-            BackgroundColor="#000000"
-            Opacity="0.35"/>
+        <!-- OVERLAY -->
+        <BoxView BackgroundColor="Black" Opacity="0.35"/>
 
         <!-- MAIN UI -->
-        <Grid RowDefinitions="Auto,Auto,Auto,*">
+        <Grid RowDefinitions="Auto,*"
+               ColumnDefinitions="*,*">
 
             <!-- HEADER -->
-            <VerticalStackLayout Grid.Row="0"
-                                 Padding="25,40,25,10"
-                                 Spacing="6">
+            <Grid Grid.Row="0"
+      Grid.ColumnSpan="2"
+      Padding="15,15,15,5"
+      ColumnDefinitions="*,Auto,Auto">
 
-                <Label Text="Habit Tracker"
-                       FontSize="34"
-                       FontAttributes="Bold"
-                       TextColor="White"/>
+                <!-- LEFT (infos) -->
+                <VerticalStackLayout Grid.Column="0"
+                         Spacing="2">
 
-                <Label Text="Build consistency every day"
-                       FontSize="14"
-                       TextColor="#E5E7EB"/>
+                    <Label Text="Habit Tracker"
+               FontSize="20"
+               FontAttributes="Bold"
+               TextColor="White"/>
 
-            </VerticalStackLayout>
+                    <Label x:Name="StreakLabel"
+               Text="🔥 0 day streak"
+               FontSize="13"
+               TextColor="#F59E0B"/>
 
-            <!-- STREAK -->
-            <Label x:Name="StreakLabel"
-                   Grid.Row="1"
-                   Margin="25,5"
-                   FontSize="16"
-                   TextColor="#F59E0B"
-                   Text="🔥 0 day streak"/>
+                    <Label x:Name="PointsLabel"
+               Text="💰 0 points"
+               FontSize="13"
+               TextColor="#22C55E"/>
 
-            <!-- PROGRESS CARD -->
-            <Frame Grid.Row="2"
-                   Margin="20,10"
-                   CornerRadius="16"
-                   Padding="20"
-                   HasShadow="True"
-                   BackgroundColor="White"
-                   Opacity="0.95">
-
-                <VerticalStackLayout Spacing="10">
-
-                    <Label Text="Today's progress"
-                           FontSize="14"
-                           TextColor="#6B7280"/>
+                    <Label x:Name="RewardLabel"
+       Text=""
+       FontSize="14"
+       TextColor="Gold"/>
 
                     <Label x:Name="ProgressLabel"
-                           Text="0 / 0 habits completed"
-                           FontSize="18"
-                           FontAttributes="Bold"
-                           TextColor="#111827"/>
+               Text="0 / 0 habits"
+               FontSize="12"
+               TextColor="#E5E7EB"/>
 
-                    <ProgressBar x:Name="ProgressBar"
-                                 Progress="0"
-                                 HeightRequest="10"
-                                 BackgroundColor="#E5E7EB"
-                                 ProgressColor="#22C55E"/>
-
-                    <Label x:Name="StatsLabel"
-                           FontSize="13"
-                           TextColor="#6B7280"
-                           Text="Completion rate: 0%"/>
+                    <Label x:Name="SpinLabel"
+               Text="🎡 0 spins"
+               FontSize="13"
+               TextColor="#60A5FA"/>
 
                 </VerticalStackLayout>
 
-            </Frame>
+                <!-- MIDDLE (history) -->
+                <CollectionView Grid.Column="1"
+                x:Name="HistoryList"
+                WidthRequest="980"
+                HeightRequest="130"
+                >
 
-            <!-- HABIT LIST -->
-            <CollectionView Grid.Row="3"
-                            x:Name="HabitList"
-                            Margin="15,10,15,90"
-                            ItemsLayout="VerticalList">
 
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Label Text="{Binding Display}"
+                       TextColor="White"
+                       FontSize="13"/>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
 
-                        <SwipeView>
+                </CollectionView>
 
-                            <SwipeView.RightItems>
-                                <SwipeItems>
-                                    <SwipeItem Text="Delete"
-                                               BackgroundColor="#EF4444"
-                                               Invoked="OnDeleteHabit"/>
-                                </SwipeItems>
-                            </SwipeView.RightItems>
+                <!-- RIGHT (button) -->
+                <Button Text="✓"
+            Clicked="OnCompleteDayClicked"
+            Grid.Column="2"
+            WidthRequest="60"
+            HeightRequest="40"
+            CornerRadius="20"
+            BackgroundColor="#22C55E"
+            TextColor="White"/>
 
-                            <Frame CornerRadius="16"
-                                   Padding="16"
-                                   Margin="0,6"
-                                   BackgroundColor="White"
-                                   Opacity="0.95"
-                                   HasShadow="True">
+            </Grid>
 
-                                <Grid ColumnDefinitions="Auto,*,Auto"
-                                      ColumnSpacing="12">
 
-                                    <CheckBox Grid.Column="0"
-                                              IsChecked="{Binding IsCompleted}"
-                                              CheckedChanged="OnHabitCheckedChanged"
-                                              Color="#22C55E"/>
+            <VerticalStackLayout Grid.Row="1"
+                     Grid.Column="0"
+                     Margin="15"
+                     Spacing="10">
 
-                                    <Label Grid.Column="1"
-                                           Text="{Binding Name}"
-                                           FontSize="18"
-                                           FontAttributes="Bold"
-                                           TextColor="#111827"
-                                           VerticalOptions="Center"/>
+                <!-- HABITS -->
+                <CollectionView x:Name="HabitList"
+                    ItemsLayout="VerticalList"
+                    VerticalOptions="FillAndExpand">
 
-                                    <Button Grid.Column="2"
-                                            Text="Edit"
-                                            Clicked="OnEditHabit"
-                                            FontSize="12"
-                                            BackgroundColor="#F59E0B"
-                                            TextColor="White"
-                                            CornerRadius="8"
-                                            Padding="10,6"/>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
 
-                                </Grid>
+                            <SwipeView>
 
-                            </Frame>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Delete"
+                                       BackgroundColor="#EF4444"
+                                       Invoked="OnDeleteHabit"/>
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
 
-                        </SwipeView>
+                                <Frame CornerRadius="16"
+                           Padding="16"
+                           Margin="0,6"
+                           BackgroundColor="White"
+                           Opacity="0.95"
+                           WidthRequest="500">
 
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
+                                    <Grid ColumnDefinitions="Auto,*,Auto"
+                              ColumnSpacing="12">
 
-            </CollectionView>
+                                        <CheckBox Grid.Column="0"
+                                      IsChecked="{Binding IsCompleted}"
+                                      CheckedChanged="OnHabitCheckedChanged"
+                                      Color="#22C55E"/>
 
-            <!-- FLOATING BUTTON -->
-            <Button Text="+"
-                    Clicked="OnAddHabitClicked"
-                    FontSize="28"
-                    FontAttributes="Bold"
-                    WidthRequest="65"
-                    HeightRequest="65"
-                    CornerRadius="32"
-                    BackgroundColor="#16A34A"
-                    TextColor="White"
-                    HorizontalOptions="End"
-                    VerticalOptions="End"
-                    Margin="0,0,25,25"/>
+                                        <Label Grid.Column="1"
+                                   Text="{Binding Name}"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="#111827"
+                                   VerticalOptions="Center"/>
+
+                                        <Button Grid.Column="2"
+                                    Text="Edit"
+                                    Clicked="OnEditHabit"
+                                    FontSize="12"
+                                    BackgroundColor="#F59E0B"
+                                    TextColor="White"
+                                    CornerRadius="8"
+                                    Padding="10,6"/>
+
+                                    </Grid>
+
+                                </Frame>
+
+                            </SwipeView>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+                <!-- HISTORY -->
+
+
+            </VerticalStackLayout>
+
+
+            <VerticalStackLayout Grid.Row="1"
+                     Grid.Column="1"
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center"
+                     Spacing="10">
+
+
+
+
+
+                <Button
+    x:Name="SpinButton"
+    BackgroundColor="Transparent"
+    BorderColor="Transparent"
+    ImageSource="spin_button.png"
+    WidthRequest="200"
+    HeightRequest="87"
+    Clicked="OnSpinClicked"/>
+
+                <Image x:Name="WheelImage"
+                       Source="wheel.png"
+                       WidthRequest="1000"
+                       HeightRequest="350"
+                       Aspect="AspectFit"
+                       InputTransparent="True"/>
+
+            </VerticalStackLayout>
 
         </Grid>
+
+        <!-- FLOAT BUTTON -->
+        <Button Text="+"
+                Clicked="OnAddHabitClicked"
+                FontSize="28"
+                FontAttributes="Bold"
+                WidthRequest="65"
+                HeightRequest="65"
+                CornerRadius="32"
+                BackgroundColor="#16A34A"
+                TextColor="White"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="0,0,25,25"/>
 
     </Grid>
 
