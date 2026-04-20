@@ -1,4 +1,10 @@
-﻿using System.Collections.ObjectModel;
+/*
+ * HabitTrackerApp
+ * Author: Vernens Charles 
+ * © 2026 All rights reserved
+ */
+
+using System.Collections.ObjectModel;
 using Microsoft.Maui.Storage;
 using System.Linq;
 using System.ComponentModel;
